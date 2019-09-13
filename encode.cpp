@@ -3,6 +3,7 @@
 
 using namespace std;
 
+//functions used in program
 void insertionSort(string*, int);
 int stringMatch(string, string*, int);
 void output2(string, int);
@@ -11,85 +12,52 @@ void mergeSort(string*, int, int);
 
 int main(int argc, char** argv)
 {
+  //defining strings used
   string sortAlg = argv[1];
-  string testWord = argv[2];
+  string input = "";
 
-  if(sortAlg == "insertion")
-    {
-      string* originalList = new string[testWord.size()];
-      string* tempList = new string[testWord.size()];
-      string* sortedList = new string[testWord.size()];
-      string temp = testWord;
+  //loops while there is still string input
+  while(getline(cin, input))
+    { 
+      //declaring new string arrays
+      string* originalList = new string[input.size()];
+      string* tempList = new string[input.size()];
+      string* sortedList = new string[input.size()];
+      string temp = input;
       string lastColumn = "";
       int output1 = 0;
 
+      //stores the word into arrays
       originalList[0] = temp;
       tempList[0] = temp;
 
-      for(int i = 1; i < testWord.size(); i++)
+      //performs shifting and fills originalList
+      for(int i = 1; i < input.size(); i++)
 	{
 	  originalList[i] = temp.substr(1, 10) + temp.substr(0, 1);
 	  tempList[i] = originalList[i];
 	  temp = originalList[i];
 	}
 
-      for(int i = 0; i < testWord.size(); i++)
-	cout << originalList[i] << endl;
-
-      cout << endl;
-
-      insertionSort(tempList, testWord.size());
-      for(int i = 0; i < testWord.size(); i++)
+      if(sortAlg == "insertion")
+	insertionSort(tempList, input.size());
+      else if(sortAlg == "merge")
+	mergeSort(tempList, 0, input.size()-1);
+      else
+	cout << "Invalid input" << endl;
+	  
+      //places sorted strings into sortedList
+      for(int i = 0; i < input.size(); i++)
 	{
 	  sortedList[i] = tempList[i];
-	  lastColumn = lastColumn + sortedList[i].substr(testWord.size()-1, 1);
+	  lastColumn = lastColumn + sortedList[i].substr(input.size()-1, 1);
 	}
 
-      for(int i = 0; i < testWord.size(); i++)
-	cout << sortedList[i] << endl;
-
-      cout << stringMatch(testWord, sortedList, testWord.size()) << endl;
+      //output
+      cout << stringMatch(input, sortedList, input.size()) << endl;
       output2(lastColumn, lastColumn.size());
     }
-  else if(sortAlg == "merge")
-    {
-      string* originalList = new string[testWord.size()];
-      string* tempList = new string[testWord.size()];
-      string* sortedList = new string[testWord.size()];
-      string temp = testWord;
-      string lastColumn = "";
-      int output1 = 0;
 
-      originalList[0] = temp;
-      tempList[0] = temp;
-
-      for(int i = 1; i < testWord.size(); i++)
-	{
-	  originalList[i] = temp.substr(1, 10) + temp.substr(0, 1);
-	  tempList[i] = originalList[i];
-	  temp = originalList[i];
-	}
-
-      for(int i = 0; i < testWord.size(); i++)
-	cout << originalList[i] << endl;
-
-      cout << endl;
-
-      mergeSort(tempList, 0, testWord.size()-1);
-      for(int i = 0; i < testWord.size(); i++)
-	{
-	  sortedList[i] = tempList[i];
-	  lastColumn = lastColumn + sortedList[i].substr(testWord.size()-1, 1);
-	}
-
-      for(int i = 0; i < testWord.size(); i++)
-	cout << sortedList[i] << endl;
-
-      cout << stringMatch(testWord, sortedList, testWord.size()) << endl;
-      output2(lastColumn, lastColumn.size());
-    }
-  else
-    cout << "Invalid input" << endl;
   return 0;
 }
 
