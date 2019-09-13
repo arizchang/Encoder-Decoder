@@ -19,43 +19,49 @@ int main(int argc, char** argv)
   //loops while there is still string input
   while(getline(cin, input))
     { 
-      //declaring new string arrays
-      string* originalList = new string[input.size()];
-      string* tempList = new string[input.size()];
-      string* sortedList = new string[input.size()];
-      string temp = input;
-      string lastColumn = "";
-      int output1 = 0;
-
-      //stores the word into arrays
-      originalList[0] = temp;
-      tempList[0] = temp;
-
-      //performs shifting and fills originalList
-      for(int i = 1; i < input.size(); i++)
+      if(input.size() == 0)
 	{
-	  originalList[i] = temp.substr(1, input.size()-1) + temp.substr(0, 1);
-	  tempList[i] = originalList[i];
-	  temp = originalList[i];
 	}
-
-      if(sortAlg == "insertion")
-	insertionSort(tempList, input.size());
-      else if(sortAlg == "merge")
-	mergeSort(tempList, 0, input.size()-1);
       else
-	cout << "Invalid input" << endl;
-	  
-      //places sorted strings into sortedList
-      for(int i = 0; i < input.size(); i++)
 	{
-	  sortedList[i] = tempList[i];
-	  lastColumn = lastColumn + sortedList[i].substr(input.size()-1, 1);
-	}
+	  //declaring new string arrays
+	  string* originalList = new string[input.size()];
+	  string* tempList = new string[input.size()];
+	  string* sortedList = new string[input.size()];
+	  string temp = input;
+	  string lastColumn = "";
+	  int output1 = 0;
 
-      //output
-      cout << stringMatch(input, sortedList, input.size()) << endl;
-      output2(lastColumn, lastColumn.size());
+	  //stores the word into arrays
+	  originalList[0] = temp;
+	  tempList[0] = temp;
+
+	  //performs shifting and fills originalList
+	  for(int i = 1; i < input.size(); i++)
+	    {
+	      originalList[i] = temp.substr(1, input.size()-1) + temp.substr(0, 1);
+	      tempList[i] = originalList[i];
+	      temp = originalList[i];
+	    }
+
+	  if(sortAlg == "insertion")
+	    insertionSort(tempList, input.size());
+	  else if(sortAlg == "merge")
+	    mergeSort(tempList, 0, input.size()-1);
+	  else
+	    cout << "Invalid input" << endl;
+	  
+	  //places sorted strings into sortedList
+	  for(int i = 0; i < input.size(); i++)
+	    {
+	      sortedList[i] = tempList[i];
+	      lastColumn = lastColumn + sortedList[i].substr(input.size()-1, 1);
+	    }
+
+	  //output
+	  cout << stringMatch(input, sortedList, input.size()) << endl;
+	  output2(lastColumn, lastColumn.size());
+	}
     }
 
   return 0;
