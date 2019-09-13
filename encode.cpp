@@ -34,7 +34,7 @@ int main(int argc, char** argv)
       //performs shifting and fills originalList
       for(int i = 1; i < input.size(); i++)
 	{
-	  originalList[i] = temp.substr(1, 10) + temp.substr(0, 1);
+	  originalList[i] = temp.substr(1, input.size()-1) + temp.substr(0, 1);
 	  tempList[i] = originalList[i];
 	  temp = originalList[i];
 	}
