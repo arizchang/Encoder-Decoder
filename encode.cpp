@@ -67,6 +67,7 @@ int main(int argc, char** argv)
   return 0;
 }
 
+//insertion sort
 void insertionSort(string* array, int size)
 {
   string key = "";
@@ -85,6 +86,7 @@ void insertionSort(string* array, int size)
     }
 }
 
+//returns the index of the original string
 int stringMatch(string word, string* array, int size)
 {
   for(int i = 0; i < size; i++)
@@ -94,6 +96,7 @@ int stringMatch(string word, string* array, int size)
     }
 }
 
+//prints the compressed output
 void output2(string word, int size)
 {
   int count;
@@ -116,6 +119,7 @@ void output2(string word, int size)
   cout << endl;
 }
 
+//merges two halves for sorting
 void merge(string* array, int start, int mid, int end)
 {
   string* temp = new string[end-start+1];
