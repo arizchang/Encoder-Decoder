@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
 //functions used in program
 void insertionSort(string*, int);
 int stringMatch(string, string*, int);
-void output2(string, int);
+string output2(string, int);
 void merge(string*, int, int, int);
 void mergeSort(string*, int, int);
 
@@ -21,6 +22,8 @@ int main(int argc, char** argv)
     { 
       if(input.size() == 0)
 	{
+	  cout << 0 << endl;
+	  cout << "" << endl;
 	}
       else
 	{
@@ -60,7 +63,7 @@ int main(int argc, char** argv)
 
 	  //output
 	  cout << stringMatch(input, sortedList, input.size()) << endl;
-	  output2(lastColumn, lastColumn.size());
+	  cout << output2(lastColumn, lastColumn.size());
 	}
     }
 
@@ -97,11 +100,12 @@ int stringMatch(string word, string* array, int size)
 }
 
 //prints the compressed output
-void output2(string word, int size)
+string output2(string word, int size)
 {
   int count;
   char letter;
   int index;
+  stringstream buffer;
 
   for(int i = 0; i < size; i += count)
     {
@@ -113,10 +117,11 @@ void output2(string word, int size)
 	  count++;
 	  index++;
 	}
-      cout << count;
-      cout << letter;
+      buffer << count;
+      buffer << letter;
     }
-  cout << endl;
+  buffer << endl;
+  return buffer.str();
 }
 
 //merges two halves for sorting
