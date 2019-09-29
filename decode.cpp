@@ -8,9 +8,12 @@ using namespace std;
 //functions used in program
 void insertionSort(string&);
 bool ifUsed(int*, int, int);
+void merge(string&, int, int, int);
+void mergeSort(string&, int, int);
 
 int main(int argc, char** argv)
 {
+  string sortAlg = argv[1];
   int count = 0;
   int index = 0;
   int charCount = 0;
@@ -46,7 +49,6 @@ int main(int argc, char** argv)
 	    {
 	      string character;
 	      iss >> character;
-
 	      encodedLine.push_back(character);
 	    }
 
@@ -68,7 +70,13 @@ int main(int argc, char** argv)
 	    }
 	  //cout << last << endl;
 	  temp = last;
-	  insertionSort(temp);
+	  if(sortAlg == "insertion")
+	    insertionSort(temp);
+	  else if(sortAlg == "merge")
+	    mergeSort(temp, 0, temp.length()-1);
+	  else
+	    cout << "Invalid input" << endl;
+
 	  sorted = temp;
 
 	  int* next = new int[sorted.length()];
@@ -129,4 +137,65 @@ bool ifUsed(int* array, int size, int num)
 	return true;
     }
   return false;
+}
+
+//merges two halves for sorting
+void merge(string &array, int start, int mid, int end)
+{
+  string temp = "";
+  int a = start;
+  int b = mid + 1;
+  int c = 0;
+
+  //places values into a temporary array
+  while (a <= mid && b <= end)
+    {
+      if(array[a] <= array[b])
+	{
+	  temp[c] = array[a];
+	  c++;
+	  a++;
+	}
+      else
+	{
+	  temp[c] = array[b];
+	  c++;
+	  b++;
+	}
+    }
+
+  //copies leftover elements
+  while(a <= mid)
+    {
+      temp[c] = array[a];
+      c++;
+      a++;
+    }
+
+  //copies leftover elements
+  while(b <= end)
+    {
+      temp[c] = array[b];
+      c++;
+      b++;
+    }
+
+  //places the temporary data back into the array
+  for(a = start; a <= end; a++)
+    {
+      array[a] = temp[a - start];
+    }
+}
+
+//recursive function for completing merge sort
+void mergeSort(string &array, int start, int end)
+{
+  if(start < end)
+    {
+      //sorts first half, second half, then merges them together
+      int mid = (start + end)/2;
+      mergeSort(array, start, mid);
+      mergeSort(array, mid + 1, end);
+      merge(array, start, mid, end);
+    }
 }
