@@ -47,6 +47,7 @@ int main(int argc, char** argv)
 	      temp = originalList[i];
 	    }
 
+	  //determines which sorting algorithm to use
 	  if(sortAlg == "insertion")
 	    insertionSort(tempList, input.size());
 	  else if(sortAlg == "merge")
@@ -76,11 +77,11 @@ void insertionSort(string* array, int size)
   string key = "";
   int j = 0;
 
-  for(int i = 0; i < size; i++)
+  for(int i = 0; i < size; i++) //steps through the array to be sorted
     {
       key = array[i];
       j = i - 1;
-      while(j >= 0 && array[j] > key)
+      while(j >= 0 && array[j] > key) //shifting
 	{
 	  array[j+1] = array[j];
 	  j--;
@@ -107,6 +108,7 @@ string output2(string word, int size)
   int index;
   stringstream buffer;
 
+  //prints the amount of each consecutive letter and the letter itself
   for(int i = 0; i < size; i += count)
     {
       count = 1;
@@ -117,8 +119,7 @@ string output2(string word, int size)
 	  count++;
 	  index++;
 	}
-      buffer << count;
-      buffer << letter;
+      buffer << count << " " << letter << " ";
     }
   buffer << endl;
   return buffer.str();

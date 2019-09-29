@@ -1,2 +1,5 @@
 encode: encode.cpp
 	g++ -o encode encode.cpp
+
+decode: decode.cpp
+	g++ -o decode decode.cpp
