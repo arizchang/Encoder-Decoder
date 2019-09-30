@@ -19,6 +19,10 @@ int main(int argc, char** argv)
   string input = "";
   int index = 0;
 
+  string test = "43";
+  int myInt = stoi(test);
+  cout << myInt + myInt << endl;
+
   while(getline(cin, input))
     {
    
