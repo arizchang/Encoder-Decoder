@@ -16,22 +16,25 @@ int main(int argc, char** argv)
 {
   string sortAlg = argv[1];
   int count = 0;
-  int index = 0;
-  int charCount = 0;
-  int x = 0;
   string input = "";
-  string last = "";
-  string temp = "";
-  string sorted = "";
-  string decoded = "";
-  vector<string> encodedLine;
+  int index = 0;
 
   while(getline(cin, input))
     {
+   
+      int charCount = 0;
+      int x = 0;
+      string last = "";
+      string temp = "";
+      string sorted = "";
+      string decoded = "";
+      vector<string> encodedLine;
+
       //blank line
       if(input.size() == 0)
 	{
 	  count++;
+	  cout << endl;
 	}
 
       //index line
@@ -124,6 +127,7 @@ int main(int argc, char** argv)
 	  //cout << index << endl;
 	  cout << decoded << endl;
 	  count++;
+	  input = "";
 	}
     }
 }
