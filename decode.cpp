@@ -10,6 +10,7 @@ void insertionSort(string&);
 bool ifUsed(int*, int, int);
 void merge(string&, int, int, int);
 void mergeSort(string&, int, int);
+bool isNumber(string);
 
 int main(int argc, char** argv)
 {
@@ -44,6 +45,7 @@ int main(int argc, char** argv)
       //encoded line
       else
 	{
+	  int i = 0;
 	  istringstream iss(input);
 	  while(iss)
 	    {
@@ -51,7 +53,17 @@ int main(int argc, char** argv)
 	      iss >> character;
 	      encodedLine.push_back(character);
 	    }
+	  
+	  //accounts for missed spaces
+	  for(int i = 0; i < encodedLine.size(); i++)
+	    {
+	      if(i > 0 && isNumber(encodedLine[i]) && isNumber(encodedLine[i-1]))
+		{
+		  encodedLine.insert(encodedLine.begin() + i, " ");
+		}
+	    }
 
+	  //creating last
 	  for(int i = 0; i < encodedLine.size(); i++)
 	    {
 	      //char count
@@ -66,8 +78,12 @@ int main(int argc, char** argv)
 		{
 		  for(int j = 0; j < charCount; j++)
 		    last = last + encodedLine[i];
+		  //cout << " Added " << encodedLine[i] << i;
 		}
 	    }
+	  //cout << encodedLine.size();
+	  //cout << encodedLine[32];
+	  //cout << endl;
 	  //cout << last << endl;
 	  temp = last;
 	  if(sortAlg == "insertion")
@@ -78,6 +94,8 @@ int main(int argc, char** argv)
 	    cout << "Invalid input" << endl;
 
 	  sorted = temp;
+
+	  //cout << sorted << endl;
 
 	  int* next = new int[sorted.length()];
 	  //fill with -1
@@ -92,6 +110,7 @@ int main(int argc, char** argv)
 		    {
 		      next[i] = j;
 		      j = sorted.length();
+		      //cout << next[i] << " ";
 		    }
 		}
 	    }
@@ -102,7 +121,7 @@ int main(int argc, char** argv)
 	      decoded = decoded + last[x];
 	      x = next[x];
 	    }
-
+	  //cout << index << endl;
 	  cout << decoded << endl;
 	  count++;
 	}
@@ -198,4 +217,14 @@ void mergeSort(string &array, int start, int end)
       mergeSort(array, mid + 1, end);
       merge(array, start, mid, end);
     }
+}
+
+bool isNumber(string word)
+{
+  for(int i = 0; i < word.length(); i++)
+    {
+      if(!isdigit(word[i]))
+	 return false;
+    }
+  return true;
 }
