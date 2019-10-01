@@ -19,10 +19,6 @@ int main(int argc, char** argv)
   string input = "";
   int index = 0;
 
-  string test = "43";
-  int myInt = stoi(test);
-  cout << myInt + myInt << endl;
-
   while(getline(cin, input))
     {
    
@@ -44,23 +40,37 @@ int main(int argc, char** argv)
       //index line
       else if(count % 2 == 0)
 	{
-	  stringstream ss(input);
-	  ss >> index;
+	  //stringstream ss(input);
+	  //ss >> index;
+	  index = stoi(input);
 	  count++;
 	}
-
       //encoded line
       else
 	{
 	  int i = 0;
-	  istringstream iss(input);
-	  while(iss)
+
+	  //istringstream iss(input);
+	  while(i < input.length())
 	    {
 	      string character;
-	      iss >> character;
+	      int startIndex = i;
+	      int moveBy = 0;
+	      while(input[i] != ' ' && i < input.length())
+		{
+		  i++;
+		  moveBy++;
+		}
+	      character = input.substr(startIndex, moveBy);
+	      while(input[i] == ' ' && i < input.length())
+		i++;
+	      //iss >> character;
 	      encodedLine.push_back(character);
 	    }
-	  
+
+	  //for(int i = 0; i < encodedLine.size(); i++)
+	  //cout << encodedLine[i];
+	    
 	  //accounts for missed spaces
 	  for(int i = 0; i < encodedLine.size(); i++)
 	    {
@@ -69,6 +79,11 @@ int main(int argc, char** argv)
 		  encodedLine.insert(encodedLine.begin() + i, " ");
 		}
 	    }
+	  if(isNumber(encodedLine[encodedLine.size()-1]))
+	    encodedLine.push_back(" ");
+
+	  //for(int i = 0; i < encodedLine.size(); i++)
+	  //cout << encodedLine[i];
 
 	  //creating last
 	  for(int i = 0; i < encodedLine.size(); i++)
@@ -76,8 +91,10 @@ int main(int argc, char** argv)
 	      //char count
 	      if(i % 2 == 0)
 		{
-		  stringstream ss(encodedLine[i]);
-		  ss >> charCount;
+		  //stringstream ss(encodedLine[i]);
+		  //ss >> charCount;
+		  //cout << encodedLine[i] + " ";
+		  charCount = stoi(encodedLine[i]);
 		}
 
 	      //char to be printed
@@ -232,7 +249,7 @@ bool isNumber(string word)
   for(int i = 0; i < word.length(); i++)
     {
       if(!isdigit(word[i]))
-	 return false;
+	return false;
     }
   return true;
 }
