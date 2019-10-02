@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 //functions used in program
 void insertionSort(string*, int);
@@ -16,6 +18,7 @@ int main(int argc, char** argv)
   //defining strings used
   string sortAlg = argv[1];
   string input = "";
+  auto start = high_resolution_clock::now();
 
   //loops while there is still string input
   while(getline(cin, input))
@@ -67,6 +70,9 @@ int main(int argc, char** argv)
 	  cout << output2(lastColumn, lastColumn.size());
 	}
     }
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop - start);
+  //cout << "Execution time: " << duration.count() << " microseconds" << endl;
 
   return 0;
 }

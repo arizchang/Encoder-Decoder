@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string>
-#include <sstream>
 #include <vector>
+#include <cmath>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 //functions used in program
 void insertionSort(string&);
@@ -11,13 +13,16 @@ bool ifUsed(int*, int, int);
 void merge(string&, int, int, int);
 void mergeSort(string&, int, int);
 bool isNumber(string);
+void compressionExperiment(const vector<double>&);
 
 int main(int argc, char** argv)
 {
+  auto start = high_resolution_clock::now();
   string sortAlg = argv[1];
   int count = 0;
   string input = "";
   int index = 0;
+  vector<double> compressionRatios;
 
   while(getline(cin, input))
     {
@@ -40,8 +45,6 @@ int main(int argc, char** argv)
       //index line
       else if(count % 2 == 0)
 	{
-	  //stringstream ss(input);
-	  //ss >> index;
 	  index = stoi(input);
 	  count++;
 	}
@@ -50,7 +53,6 @@ int main(int argc, char** argv)
 	{
 	  int i = 0;
 
-	  //istringstream iss(input);
 	  while(i < input.length())
 	    {
 	      string character;
@@ -67,9 +69,6 @@ int main(int argc, char** argv)
 	      //iss >> character;
 	      encodedLine.push_back(character);
 	    }
-
-	  //for(int i = 0; i < encodedLine.size(); i++)
-	  //cout << encodedLine[i];
 	    
 	  //accounts for missed spaces
 	  for(int i = 0; i < encodedLine.size(); i++)
@@ -82,18 +81,12 @@ int main(int argc, char** argv)
 	  if(isNumber(encodedLine[encodedLine.size()-1]))
 	    encodedLine.push_back(" ");
 
-	  //for(int i = 0; i < encodedLine.size(); i++)
-	  //cout << encodedLine[i];
-
 	  //creating last
 	  for(int i = 0; i < encodedLine.size(); i++)
 	    {
 	      //char count
 	      if(i % 2 == 0)
 		{
-		  //stringstream ss(encodedLine[i]);
-		  //ss >> charCount;
-		  //cout << encodedLine[i] + " ";
 		  charCount = stoi(encodedLine[i]);
 		}
 
@@ -102,13 +95,26 @@ int main(int argc, char** argv)
 		{
 		  for(int j = 0; j < charCount; j++)
 		    last = last + encodedLine[i];
-		  //cout << " Added " << encodedLine[i] << i;
 		}
 	    }
-	  //cout << encodedLine.size();
-	  //cout << encodedLine[32];
-	  //cout << endl;
-	  //cout << last << endl;
+
+	  //making list of compression ratios
+	  int numClusters = 0;
+	  double ratio = 0;
+	  for(int i = 0; i < encodedLine.size(); i++)
+	    {
+	      if(i % 2 == 0)
+		{
+		  numClusters++;
+		}
+	    }
+	  ratio = ((double)(last.length() - numClusters)/last.length())*100;
+	  //cout << "Input length: " << last.length() << endl;
+	  //cout << "Num clusters: " << numClusters << endl;
+	  //cout << "Ratio: " << ratio << endl;
+	  compressionRatios.push_back(ratio);
+
+	  //determines which sorting to use
 	  temp = last;
 	  if(sortAlg == "insertion")
 	    insertionSort(temp);
@@ -118,8 +124,6 @@ int main(int argc, char** argv)
 	    cout << "Invalid input" << endl;
 
 	  sorted = temp;
-
-	  //cout << sorted << endl;
 
 	  int* next = new int[sorted.length()];
 	  //fill with -1
@@ -134,7 +138,6 @@ int main(int argc, char** argv)
 		    {
 		      next[i] = j;
 		      j = sorted.length();
-		      //cout << next[i] << " ";
 		    }
 		}
 	    }
@@ -145,12 +148,17 @@ int main(int argc, char** argv)
 	      decoded = decoded + last[x];
 	      x = next[x];
 	    }
-	  //cout << index << endl;
 	  cout << decoded << endl;
 	  count++;
 	  input = "";
 	}
     }
+  
+  //experiments
+  compressionExperiment(compressionRatios);
+  auto stop = high_resolution_clock::now();
+  auto duration = duration_cast<microseconds>(stop - start);
+  //cout << "Execution time: " << duration.count() << " microseconds" << endl;
 }
 
 //insertion sort
@@ -252,4 +260,44 @@ bool isNumber(string word)
 	return false;
     }
   return true;
+}
+
+void compressionExperiment(const vector<double> &ratios)
+{
+  double min = 100;
+  double max = 0;
+  double sum = 0;
+  double average = 0;
+  double stdAverage = 0;
+  double stdSum = 0;
+  double stdDeviation = 0;
+
+  double* stdArray = new double[ratios.size()];
+
+  for(int i = 0; i < ratios.size(); i++)
+    {
+      if(ratios[i] < min)
+	min = ratios[i];
+
+      if(ratios[i] > max)
+	max = ratios[i];
+
+      sum += ratios[i];
+    }
+
+  average = (double)sum/ratios.size();
+
+  for(int i = 0; i < ratios.size(); i++)
+    {    
+      stdArray[i] = ((double)ratios[i] - average)*((double)ratios[i] - average);
+      stdSum += stdArray[i];
+    }
+
+  stdAverage = stdSum/ratios.size();
+  stdDeviation = sqrt(stdAverage);
+
+  cout << "Min: " << min << "%" << endl;
+  cout << "Max: " << max << "%" << endl;
+  cout << "Average: " << average << "%" << endl;
+  cout << "Standard Deviation: " << stdDeviation << "%" << endl;
 }
